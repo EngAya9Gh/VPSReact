@@ -12,8 +12,14 @@ const PageLayoutSection = ({
 	pageTitle,
 	items,
 	sectionId,
-	resourceType, 
-	hasSection
+	resourceType,
+	hasSection,
+	onSearch,
+	onPageChange,
+	onPerPageChange,
+	currentPage,
+	searchTerm,
+	perPage
 }) => {
 	const content = normalizedData(homepageData?.content || []);
 
@@ -21,14 +27,13 @@ const PageLayoutSection = ({
 		<Wrapper>
 			<SEO pageTitle={pageTitle} />
 			<Header />
-			<div className="list-item-1">
-				<TopBarArea />
-			</div>
+			{/* تم إزالة TopBarArea من هذه الصفحة لتجنب تكرار حقل البحث */}
 			<main
 				id="main-content"
-				className="rn-nft-mid-wrapper nft-left-sidebar-nav pr--40 pr_sm--15 pt-5"
+				className="rn-nft-mid-wrapper nft-left-sidebar-nav pr--40 pr_sm--15"
+				style={{ paddingTop: '2rem' }}
 			>
-				{!items || items.length === 0 ? (
+				{!items || (Array.isArray(items.data) ? items.data.length === 0 : items.length === 0) ? (
 					<h2 className="text-center">لا توجد بيانات متاحة</h2>
 				) : (
 					<ExploreServiceArea
@@ -36,6 +41,12 @@ const PageLayoutSection = ({
 						id="list-item-3"
 						space={2}
 						hasSection={hasSection}
+						onSearch={onSearch}
+						onPageChange={onPageChange}
+						onPerPageChange={onPerPageChange}
+						currentPage={currentPage}
+						searchTerm={searchTerm}
+						perPage={perPage}
 						data={{
 							...content['explore-product-section'],
 							parentSlug: resourceType,
@@ -53,16 +64,30 @@ const PageLayoutSection = ({
 // Updated PropTypes validation
 PageLayoutSection.propTypes = {
 	pageTitle: PropTypes.string.isRequired,
-	items: PropTypes.arrayOf(
+	items: PropTypes.oneOfType([
+		PropTypes.arrayOf(
+			PropTypes.shape({
+				id: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
+				name: PropTypes.string
+			})
+		),
 		PropTypes.shape({
-			id: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
-			name: PropTypes.string
-			// Add other properties as needed for better validation
+			data: PropTypes.array,
+			current_page: PropTypes.number,
+			last_page: PropTypes.number,
+			per_page: PropTypes.number,
+			total: PropTypes.number
 		})
-	).isRequired,
+	]).isRequired,
 	sectionId: PropTypes.string.isRequired,
 	resourceType: PropTypes.string.isRequired,
-	hasSection: PropTypes.bool.isRequired
+	hasSection: PropTypes.bool.isRequired,
+	onSearch: PropTypes.func,
+	onPageChange: PropTypes.func,
+	onPerPageChange: PropTypes.func,
+	currentPage: PropTypes.number,
+	searchTerm: PropTypes.string,
+	perPage: PropTypes.number
 };
 
 export default PageLayoutSection;
