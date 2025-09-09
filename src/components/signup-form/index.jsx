@@ -51,9 +51,10 @@ const SignupForm = ({ className }) => {
 
 			if (response.data) {
 				localStorage.setItem('token', response.data?.token);
-				router.push('/login');
+				router.push('/');
 			}
-			toast(response.data);
+            toast(response.data.message || 'تم التسجيل بنجاح');
+		
 		} catch  (error) {
 			console.log('Full error:', error); // عرض كل محتوى الخطأ
 			if (error.response) {
@@ -144,6 +145,8 @@ const SignupForm = ({ className }) => {
 							name="code"
 						>
 							<option value="+90">اختر البلد</option>
+							<option value="+90">(+90) تركيا</option>
+                          
 							<option value="+93">(+93) أفغانستان</option>
 							<option value="+355">(+355) ألبانيا</option>
 							<option value="+213">(+213) الجزائر</option>
@@ -305,6 +308,8 @@ const SignupForm = ({ className }) => {
 							required
 						>
 							<option value="">اختر البلد</option>
+							<option value="تركيا">تركيا</option>
+                          
 							<option value="أفغانستان">أفغانستان</option>
 							<option value="ألبانيا">ألبانيا</option>
 							<option value="الجزائر">الجزائر</option>

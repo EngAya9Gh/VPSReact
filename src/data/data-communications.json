@@ -1,0 +1,137 @@
+[
+	{
+		"id": 1,
+		"title": "الفاتورة",
+		"slug": "fatura",
+		"hasSections": true,
+		"directToOrder": false,
+		"image": "//images/services/data1.jpg",
+		"likeCount": 322,
+		"total": 0,
+		"images": [
+			{
+				"src": "/images/portfolio/lg/portfolio-01.jpg"
+			},
+			{
+				"src": "/images/portfolio/lg/portfolio-02.jpg"
+			},
+			{
+				"src": "/images/portfolio/lg/portfolio-03.jpg"
+			}
+		],
+		"authors": [
+			{
+				"name": "Mark Jordan",
+				"slug": "/author",
+				"image": {
+					"src": "/images/client/client-2.png"
+				}
+			},
+			{
+				"name": "Farik Shaikh",
+				"slug": "/author",
+				"image": {
+					"src": "/images/client/client-3.png"
+				}
+			},
+			{
+				"name": "John Doe",
+				"slug": "/author",
+				"image": {
+					"src": "/images/client/client-5.png"
+				}
+			}
+		]
+	},
+	{
+		"id": 2,
+		"title": "الرصيد (الكونتور) ",
+		"slug": "kontor",
+		"image": "/images/services/data1.jpg",
+		"hasSections": true,
+		"directToOrder": false,
+		"likeCount": 322,
+		"total": 0,
+		"images": [
+			{
+				"src": "/images/portfolio/lg/portfolio-01.jpg"
+			},
+			{
+				"src": "/images/portfolio/lg/portfolio-02.jpg"
+			},
+			{
+				"src": "/images/portfolio/lg/portfolio-03.jpg"
+			}
+		],
+		"authors": [
+			{
+				"name": "Mark Jordan",
+				"slug": "/author",
+				"image": {
+					"src": "/images/client/client-2.png"
+				}
+			},
+			{
+				"name": "Farik Shaikh",
+				"slug": "/author",
+				"image": {
+					"src": "/images/client/client-3.png"
+				}
+			},
+			{
+				"name": "John Doe",
+				"slug": "/author",
+				"image": {
+					"src": "/images/client/client-5.png"
+				}
+			}
+		]
+	},
+	{
+		"id": 3,
+		"image": "/images/services/data1.jpg",
+		"title": " اتصالات عامة ",
+		"slug": "general",
+		"hasSections": true,
+		"directToOrder": false,
+
+		"likeCount": 322,
+		"total": 0,
+		"images": [
+			{
+				"src": "/images/portfolio/lg/portfolio-01.jpg"
+			},
+			{
+				"src": "/images/portfolio/lg/portfolio-02.jpg"
+			},
+			{
+				"src": "/images/portfolio/lg/portfolio-03.jpg"
+			}
+		],
+		"authors": [
+			{
+				"name": "Mark Jordan",
+				"slug": "/author",
+				"image": {
+					"src": "/images/client/client-2.png"
+				}
+			},
+			{
+				"name": "Farik Shaikh",
+				"slug": "/author",
+				"image": {
+					"src": "/images/client/client-3.png"
+				}
+			},
+			{
+				"name": "John Doe",
+				"slug": "/author",
+				"image": {
+					"src": "/images/client/client-5.png"
+				}
+			}
+		]
+	}
+	
+
+]

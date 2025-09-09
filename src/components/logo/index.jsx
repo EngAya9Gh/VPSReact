@@ -6,7 +6,7 @@ import clsx from 'clsx';
 const Logo = ({ className, logo }) => (
 	<div className={clsx('logo-thumbnail logo-custom-css', className)}>
 		{logo && (
-			<Anchor className="logo-light" path="/">
+			<Anchor  path="/">
 				<Image
 					src={logo}
 					alt="nft-logo"

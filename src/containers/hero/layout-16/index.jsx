@@ -1,154 +1,68 @@
 import PropTypes from 'prop-types';
-import Tilt from 'react-parallax-tilt';
-import Image from 'next/image';
-import Button from '@ui/button';
-import Anchor from '@ui/anchor';
-import FunFact from '@components/funfact/layout-02';
-import {
-	HeadingType,
-	TextType,
-	ButtonType,
-	ItemType,
-	ImageType
-} from '@utils/types';
+import { useState, useEffect } from 'react';
+import Slider, { SliderItem } from '@ui/slider';
+import NewsTicker from '@components/news-ticker';
+import axios  from 'axios';
+import SingleSlide from './slide';
 
-const HeroArea = ({
-	data: { headings, texts, buttons, image, items, clients }
-}) => (
-	<div className="banner-area banner-16 pt--100 pb--120 pt_md--70 pt_sm--30 pb_md--90 pb_sm--50 bg-color--2">
-		<div className="container">
-			<div className="row">
-				<div className="col-lg-6 order-lg-1 order-md-2 order-sm-2 order-2">
-					<div className="left-banner-16-wrapepr mt_md--100 mt_sm--100">
-						{headings?.[0]?.content && (
-							<h1
-								className="title"
-								dangerouslySetInnerHTML={{
-									__html: headings[0].content
-								}}
-							/>
-						)}
-						{texts?.[0]?.content && (
-							<p
-								className="disc"
-								dangerouslySetInnerHTML={{
-									__html: texts[0].content
-								}}
-							/>
-						)}
-						<div className="button-group d-flex flex-wrap">
-							{buttons?.map(({ content, id, ...btn }, i) => (
-								<Button
-									{...btn}
-									key={id}
-									className={
-										i !== buttons.length - 1 ? 'mr--30' : ''
-									}
-								>
-									{content}
-								</Button>
-							))}
-						</div>
-						<div className="odometer-area-slide ">
-							{items?.map((item, i) => (
-								<FunFact
-									data-sal-delay={400 + i * 200}
-									data-sal="slide-left"
-									data-sal-duration="800"
-									key={item.id}
-									title={item.title}
-									counter={item.counter}
-								/>
-							))}
-						</div>
-					</div>
-				</div>
-				<div className="col-lg-6 order-lg-2 order-md-1 order-sm-1 order-1">
-					<Tilt
-						tiltReverse
-						tiltMaxAngleX={3}
-						tiltMaxAngleY={3}
-						perspective={500}
-						gyroscope
-					>
-						<div className="tilt-image-banner-16">
-							{image?.src && (
-								<Image
-									className="tilt"
-									src={image.src}
-									alt={image?.alt || 'Nft-profile'}
-									width={697}
-									height={557}
-									priority
-								/>
-							)}
-							<div className="joined-people-wrapper">
-								<div className="product-share-wrapper">
-									<div className="profile-share">
-										{clients?.map((client) => (
-											<Anchor
-												path={client.path}
-												className="avatar"
-												data-tooltip={client.name}
-												key={client.id}
-											>
-												{client?.image?.src && (
-													<Image
-														className="large"
-														src={client.image.src}
-														alt={
-															client.image?.alt ||
-															'Nft_Profile'
-														}
-														width={39}
-														height={39}
-														priority
-													/>
-												)}
-											</Anchor>
-										))}
+const HeroArea = ({ data }) => {
+  const [news, setNews] = useState([]);
+  const [loading, setLoading] = useState(true);
+	const apiBaseUrl = process.env.NEXT_PUBLIC_API_BASE_URL;
 
-										<Anchor
-											className="more-author-text"
-											path="/author"
-											tabIndex="0"
-										>
-											More Then 25K
-										</Anchor>
-									</div>
-								</div>
-								{texts?.[1]?.content && (
-									<p
-										className="disc"
-										dangerouslySetInnerHTML={{
-											__html: texts[1].content
-										}}
-									/>
-								)}
-							</div>
-						</div>
-					</Tilt>
-				</div>
-			</div>
-		</div>
-	</div>
-);
+	useEffect(() => {
+  const fetchNews = async () => {
+    try {
+      const result = await axios.get(`${apiBaseUrl}/news`);
+      setNews(result.data.news); // التصحيح هنا
+      setLoading(false);
+    } catch (error) {
+      console.error('خطأ أثناء جلب الأخبار:', error);
+    }
+  };
+
+  fetchNews();
+}, []);
+
+
+  return (
+    <div className="rn-banner-area">
+      {data && (
+        <>
+          <Slider
+            options={{ dots: true }}
+            className="p-container slider-activation-banner-4 game-banner-short-slick-wrapper slick-arrow-style-one rn-slick-dot-style"
+          >
+            {data.map((banner) => (
+              <SliderItem
+                key={banner.id}
+                className="slider-style-7 border-radious-none pt--150 pb--190 pt_sm--70 pb_sm--70"
+                data-black-overlay="6"
+              >
+                <SingleSlide title={banner.title} image={banner.image_url} />
+              </SliderItem>
+            ))}
+          </Slider>
+
+          {/* شريد الأخبار */}
+      <div className="rrrrrrr">
+          {!loading && news.length > 0 && <NewsTicker news={news} />}
+        
+      </div> 
+        </>
+      )}
+    </div>
+  );
+};
 
 HeroArea.propTypes = {
-	data: PropTypes.shape({
-		headings: PropTypes.arrayOf(HeadingType),
-		texts: PropTypes.arrayOf(TextType),
-		buttons: PropTypes.arrayOf(ButtonType),
-		items: PropTypes.arrayOf(ItemType),
-		image: ImageType,
-		clients: PropTypes.arrayOf(
-			PropTypes.shape({
-				id: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
-				name: PropTypes.string,
-				path: PropTypes.string,
-				image: ImageType
-			})
-		)
-	})
+  data: PropTypes.arrayOf(
+    PropTypes.shape({
+      id: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
+      title: PropTypes.string.isRequired,
+      image_url: PropTypes.string.isRequired,
+    })
+  ).isRequired,
 };
+
 export default HeroArea;

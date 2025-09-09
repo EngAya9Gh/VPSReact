@@ -33,7 +33,13 @@ const Company = () => {
 				setData( result.data );
 				console.log("in 1-1 component:",data);
 
-			} catch {}
+			} catch(error) {
+				if (error.response) {
+					console.error('Error Data:', error.response.data);
+					console.error('Error Status:', error.response.status);
+					console.error('Error Headers:', error.response.headers);
+						}
+			}
 		};
 		fetchAgents();
 	}, []);

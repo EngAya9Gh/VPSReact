@@ -21,13 +21,14 @@ const Home = () => {
 				const apiBaseUrl = process.env.NEXT_PUBLIC_API_BASE_URL;
 				const token = localStorage.getItem('token');
 
-				const result = await axios.get(`${apiBaseUrl}/agents/B`, {
+				const result = await axios.get(`${apiBaseUrl}/agents`, {
 					headers: {
 						Authorization: `Bearer ${token}`
 					}
 				});
 
 				setAgents(result.data.agents);
+                console.log("agentss:",agents);
 			} catch (error) {}
 		};
 		fetchAgents();

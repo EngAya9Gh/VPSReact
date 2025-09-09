@@ -4,7 +4,7 @@ import Wrapper from '@layout/wrapper';
 import Header from '@layout/header/header-02';
 import Footer from '@layout/footer/footer-02';
 import TopBarArea from '@containers/top-bar';
-import HeroArea from '@containers/hero/layout-08';
+import HeroArea from '@containers/hero/layout-16';
 import ExploreServiceArea from '@containers/explore-service/service-sections'; // Move this import up
 import { normalizedData } from '@utils/methods'; // Move this import up
 import axios from 'axios';
@@ -23,40 +23,59 @@ const Home = () => {
 	const content = normalizedData(homepageData?.content || []);
 	const [services, setServices] = useState(myStaticServices);
 	const [slider, setSlider] = useState([]);
+useEffect(() => {
+	const apiBaseUrl = process.env.NEXT_PUBLIC_API_BASE_URL;
 
-	useEffect(() => {
-		const apiBaseUrl = process.env.NEXT_PUBLIC_API_BASE_URL;
-          const fetchSlider = async () => {
-              try {
-                  const result = await axios.get(`${process.env.NEXT_PUBLIC_API_BASE_URL}/slider`);
-                  setSlider(result.data.slider.data);
-              } catch (error) {
-                  // عرض الخطأ فقط في وضع التطوير
-                  if (process.env.NODE_ENV === 'development') {
-                      console.error('Error fetching slider:', error);
-                  }
-              }
-          };
-		fetchSlider();
+	const fetchSlider = async () => {
+		try {
+			const result = await axios.get(`${apiBaseUrl}/slider`);
+			setSlider(result.data.slider.data);
+		} catch (error) {
+			if (process.env.NODE_ENV === 'development') {
+				console.error('Error fetching slider:', error);
+			}
+		}
+	};
+	fetchSlider();
 
-		const fetchTotals = async () => {
+	const fetchTotals = async () => {
+		try {
+			const result = await axios.get(`${apiBaseUrl}/totalRecords`);
+			const fetchedTotalRecords = result.data;
+			const updatedServices = services.map((service) => ({
+				...service,
+				total: fetchedTotalRecords[`${service.slug}Records`] || 0
+			}));
+			setServices(updatedServices);
+		} catch (error) {
+			if (process.env.NODE_ENV === 'development') {
+				console.error('Error fetching totals:', error);
+			}
+		}
+	};
+	fetchTotals();
+
+	const token = typeof window !== 'undefined' ? localStorage.getItem('token') : null;
+
+	if (token) {
+		const fetchCurrency = async () => {
 			try {
-				const result = await axios.get(`${apiBaseUrl}/totalRecords`);
-				const fetchedTotalRecords = result.data;
-				const updatedServices = services.map((service) => ({
-					...service,
-					total: fetchedTotalRecords[`${service.slug}Records`] || 0
-				}));
-				setServices(updatedServices);
+				const res = await axios.get(`${apiBaseUrl}/user-currency`, {
+					headers: {
+						Authorization: `Bearer ${token}`,
+					},
+				});
+				const currency = res.data.currency;
+				localStorage.setItem('currency', currency);
 			} catch (error) {
-				// Log the error only in development mode
 				if (process.env.NODE_ENV === 'development') {
-					console.error('Error fetching totals:', error);
+					console.error('Error fetching currency:', error);
 				}
 			}
 		};
-		fetchTotals();
-	}, [services]);
+		fetchCurrency();
+	}
+}, [services]);  // ✅ الآن هذا في مكانه الصحيح
 
 	return (
 		<Wrapper>

@@ -1,163 +1,175 @@
 import { useState, useEffect } from 'react';
-import Button from '@ui/button';
-import axios from 'axios';
 import PropTypes from 'prop-types';
+import Button from '@ui/button';
 import { ToastContainer, toast } from 'react-toastify';
+import axios from 'axios';
+import { useRouter } from 'next/router'; // استيراد useRouter
+import FingerprintJS from '@fingerprintjs/fingerprintjs';
 
 const OrderForm = ({ app }) => {
-	const [user, setUser] = useState({});
-	
-		// الحصول على التوكن من localStorage وتحديث السعر
-		const storedToken = localStorage.getItem('token');
-	useEffect(() => {
+  const router = useRouter(); // استخدام useRouter
+  const [user, setUser] = useState({});
+  const [deviceInfo, setDeviceInfo] = useState({});
+  const [appField, setAppField] = useState({
+    user_id: '',
+    player_no: '',
+    tweetcell_id: app ? app.id : '',
+    oyun_id: app ? app.player_no : '',
+    price: app ? app.price : '',
+    kupur: app ? app.amount : '',
+    device_info: {}, // ابدأ بـ device_info فارغة
+  });
+  const [isDisabled, setIsDisabled] = useState(false); // حالة لتتبع ما إذا كان الزر معطلاً
+  const [currency, setCurrency] = useState('TL');
 
-		const getUserDataAndUpdatePrice = async () => {
-		  
-				const apiBaseUrl = process.env.NEXT_PUBLIC_API_BASE_URL;
-				// جلب بيانات المستخدم
-				const response = await axios.get(
-					`${apiBaseUrl}/logged-in-user`,
-					{
-						headers: {
-							Authorization: `Bearer ${storedToken}`
-						}
-					}  
-				);
-				setUser(response.data);		
-		}
-		getUserDataAndUpdatePrice();
-	}, []);
-	const initialState = {
-		count: '',
-		price: app ? app.price : '',
-		user_id: user ? user.id : '',
-		app_id: app ? app.id : ''
-	};
-	const [appField, setAppField] = useState(initialState);
+    useEffect(() => {
+      if (typeof window !== 'undefined') {
+        const savedCurrency = localStorage.getItem('currency') || 'TL';
+        setCurrency(savedCurrency.toUpperCase());
+      }
+    }, []);
 
-	useEffect(() => {
 
-		const updatePrice = async () => {
-			try { 
-			
-				setAppField((prevFields) => ({
-					...prevFields,
-					user_id: user ? user.id : '',
-					price: prevFields.count * app.price // تحديث السعر بناءً على count و price
-				}));
-			} catch (error) {
-		
-			}
-		};
+  // الحصول على التوكن من localStorage وتحديث السعر
+  const storedToken = localStorage.getItem('token');
 
-		updatePrice();
-	}, [appField.count, app.price]);
+  useEffect(() => {
+    // جلب بيانات المستخدم
+    const getUserDataAndUpdatePrice = async () => {
+      const apiBaseUrl = process.env.NEXT_PUBLIC_API_BASE_URL;
+      const response = await axios.get(`${apiBaseUrl}/logged-in-user`, {
+        headers: {
+          Authorization: `Bearer ${storedToken}`,
+        },
+      });
 
-	const onSubmit = async (e) => {
-		e.preventDefault();
-		
-		const apiBaseUrl = process.env.NEXT_PUBLIC_API_BASE_URL;
-		try {
-			const result = await axios.post(
-				`${apiBaseUrl}/app/order/${app.id}`,
-				appField,
-				{
-					headers: {
-						Authorization: `Bearer ${storedToken}`
-					}
-				}
-			);
+      setUser(response.data);
+    };
 
-			toast.success(result.data.message);
-			setAppField(initialState);
-		} catch (error) {
-			if (error.response) {
-				console.error('Error Data:', error.response.data);
-				console.error('Error Status:', error.response.status);
-				console.error('Error Headers:', error.response.headers);
-				toast.error("حدث خطأ أثناء معالجة الطلب. يرجى المحاولة مرة أخرى.");
-			}
-		}
-	};
+    // جلب بيانات الجهاز مثل الاسم و IP
+    const getDeviceInfo = async () => {
+ const fp = await FingerprintJS.load();
 
-	const handleInputChange = (e) => {
-		const { name, value } = e.target;
-		setAppField({ ...appField, [name]: value });
-	};
+  // Get the unique fingerprint of the user's device
+  const result = await fp.get();
 
-	return (
-		<div className="form-wrapper-one registration-area">
-			<form onSubmit={onSubmit}>
-				<div className="tagcloud">
-					<h3 className="mb--30">
-						اتمام عملية الشراء <span> السعر : {app.price}</span>
-					</h3>
-				</div>
-				<div className="mb-5">
-					<label htmlFor="count" className="form-label">
-						العدد
-					</label>
-					<input
-						className="withRadius myinput25"
-						type="number"
-						id="count"
-						name="count"
-						required
-						placeholder="العدد"
-						value={appField.count}
-						onChange={handleInputChange}
-					/>
-					<input
-						className="withRadius myinput25 mybutton-margin"
-						type="number"
-						id="price"
-						name="price"
-						required
-						placeholder="الاجمالي"
-						readOnly
-						value={appField.price}
-					/>
-				</div>
+setDeviceInfo({
+  userAgent: navigator.userAgent, // استخدام userAgent كمفتاح
+  fingerprint: result.visitorId,  // استخدام visitorId كمفتاح
+});};
 
-				<div className="mb-5">
-					<label htmlFor="player_no" className="form-label">
-						معرف اللاعب
-					</label>
-					<input
-						className="withRadius"
-						type="text"
-						id="player_no"
-						name="player_no"
-						required
-						value={appField.player_no || ''}
-						placeholder="معرف اللاعب"
-						onChange={handleInputChange}
-					/>
-				</div>
+    // استدعاء الدوال داخل useEffect
+    getUserDataAndUpdatePrice();
+    getDeviceInfo();
+  }, []); 
 
-				<Button type="submit" size="medium" className="mr--15">
-					شراء
-				</Button>
-				<Button path="/" color="primary-alta" size="medium">
-					الغاء الأمر
-				</Button>
-			</form>
-			<br />
-			<br />
-			<div>
-				<p>{app.note}</p>
-			</div>
-			<ToastContainer />
-		</div>
-	);
+  // تحديث حالة appField عند حصول البيانات
+  useEffect(() => {
+    if (user && Object.keys(deviceInfo).length > 0) {
+      setAppField((prev) => ({
+        ...prev,
+        user_id: user.id,
+        device_info: deviceInfo, // تحديث device_info
+      }));
+    }
+  }, [user, deviceInfo]); // تحديث عندما تتغير user أو deviceInfo
+
+  const changeAppFieldHandler = (e) => {
+    const { name, value } = e.target;
+    setAppField((prev) => ({
+      ...prev,
+      [name]: value,
+    }));
+  };
+  const onSubmit = async (e) => {
+    e.preventDefault();
+   if (isDisabled) return; // إذا كان الزر معطلاً، لا نسمح بالضغط مرة أخرى
+
+    setIsDisabled(true); // تعطيل الزر بعد الضغط عليه للمرة الأولى
+    try {
+      const apiBaseUrl = process.env.NEXT_PUBLIC_API_BASE_URL;
+      const result = await axios.post(
+        `${apiBaseUrl}/tweetcell/order/${app.id}`,
+        appField,
+        {
+          headers: {
+            Authorization: `Bearer ${storedToken}`,
+          },
+        }
+      );
+
+      toast.success(result.data.message);
+      setTimeout(() => {
+        router.push('/');
+      }, 9000);
+    } catch (error) {
+      if (error.response) {
+        console.error('Error Data:', error.response.data);
+        console.error('Error Status:', error.response.status);
+        console.error('Error Headers:', error.response.headers);
+      }
+      toast.error('فشل في تسجيل الطلب، يرجى المحاولة مرة أخرى');
+    }
+  };
+
+  return (
+    <div className="form-wrapper-one registration-area">
+      <form onSubmit={onSubmit}>
+        <div className="tagcloud">
+          <h3 className="mb--30">
+            اتمام عملية الشراء
+            <span className="mybutton-margin">السعر: {app.price}{currency}</span>
+          </h3>
+        </div>
+        <div className="mb-5">
+          <label htmlFor="player_no" className="form-label">
+            ايدي اللاعب
+          </label>
+          <input
+            className="withRadius"
+            type="text"
+            id="player_no"
+            name="player_no"
+            required
+            placeholder="ايدي اللاعب"
+            onChange={changeAppFieldHandler}
+          />
+        </div>
+
+      <Button
+          type="submit"
+          size="medium"
+          className="mr--15"
+          disabled={isDisabled} // تعطيل الزر بعد الضغط عليه
+        >
+          {isDisabled ? 'جاري الإرسال...' : 'شراء'}
+        </Button>
+        <Button path="/" color="primary-alta" size="medium">
+          الغاء الأمر
+        </Button>
+      </form>
+      <br />
+      <br />
+      {app.note && (
+        <div>
+          <p>{app.note}</p>
+        </div>
+      )}
+      <ToastContainer />
+    </div>
+  );
 };
 
+// Prop types validation
 OrderForm.propTypes = {
-	app: PropTypes.shape({
-		price: PropTypes.number.isRequired,
-		id: PropTypes.string.isRequired,
-		note: PropTypes.string
-	}).isRequired
+  app: PropTypes.shape({
+    id: PropTypes.string.isRequired,
+    price: PropTypes.string.isRequired,
+    note: PropTypes.string,
+  }).isRequired,
+  user: PropTypes.shape({
+    id: PropTypes.string,
+  }),
 };
 
 export default OrderForm;

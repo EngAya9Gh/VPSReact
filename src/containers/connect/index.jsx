@@ -1,175 +1,156 @@
 import PropTypes from 'prop-types';
 import clsx from 'clsx';
-import Image from 'next/image';
 import Wallet from '@components/wallet';
-import Anchor from '@ui/anchor';
+import axios from 'axios';
+import { useEffect, useState } from 'react';
 
-const ConnectArea = ({ className, space }) => (
-	<div
-		className={clsx(
-			'rn-connect-area',
-			space === 1 && 'rn-section-gapTop',
-			className
-		)}
-	>
-		<div className="container">
-			<div className="row g mb--50 mb_md--30 mb_sm--30 align-items-center">
-				<div
-					className="col-lg-6"
-					data-sal="slide-up"
-					data-sal-delay="150"
-					data-sal-duration="800"
-				>
-					<h3 className="connect-title">Connect your wallet</h3>
-					<p className="connect-td">
-						Connect with one of available wallet providers or create
-						a new wallet.{' '}
-						<Anchor path="/collection">What is a wallet?</Anchor>
-					</p>
-				</div>
-				<div
-					className="col-lg-6"
-					data-sal="slide-up"
-					data-sal-delay="200"
-					data-sal-duration="800"
-				>
-					<p className="wallet-bootm-disc">
-						We do not own your private keys and cannot access your
-						funds without your confirmation.
-					</p>
-				</div>
-			</div>
-			<div className="row g-5">
-				<div
-					className="col-lg-6"
-					data-sal="slide-up"
-					data-sal-delay="150"
-					data-sal-duration="500"
-				>
-					<div className="connect-thumbnail">
-						<div className="left-image">
-							<Image
-								src="/images/connect/connect-01.jpg"
-								alt="Nft_Profile"
-								width={670}
-								height={576}
-								priority
-							/>
-						</div>
-					</div>
-				</div>
-				<div className="col-lg-6">
-					<div className="row g-5">
-						<div
-							className="col-xxl-4 col-lg-6 col-md-4 col-12 col-sm-6 col-12"
-							data-sal="slide-up"
-							data-sal-delay="150"
-							data-sal-duration="800"
-						>
-							<Wallet
-								title="Bitcollet"
-								description="I throw myself down among the tall."
-								path="/collection"
-								icon="feather-cast"
-							/>
-						</div>
-						<div
-							className="col-xxl-4 col-lg-6 col-md-4 col-12 col-sm-6 col-12"
-							data-sal="slide-up"
-							data-sal-delay="150"
-							data-sal-duration="800"
-						>
-							<Wallet
-								title="GrasCash"
-								description="This is a great deals For cash transfer"
-								path="/collection"
-								icon="feather-box"
-								color="purple"
-							/>
-						</div>
-						<div
-							className="col-xxl-4 col-lg-6 col-md-4 col-12 col-sm-6 col-12"
-							data-sal="slide-up"
-							data-sal-delay="150"
-							data-sal-duration="800"
-						>
-							<Wallet
-								title="Import"
-								description="Great oppertunity to reach them."
-								path="/collection"
-								icon="feather-award"
-								color="pink"
-							/>
-						</div>
-						<div
-							className="col-xxl-4 col-lg-6 col-md-4 col-12 col-sm-6 col-12"
-							data-sal="slide-up"
-							data-sal-delay="150"
-							data-sal-duration="800"
-						>
-							<Wallet
-								title="TiOne"
-								description="Built your bigger offers then me"
-								path="/collection"
-								icon="feather-briefcase"
-								color="yellow"
-							/>
-						</div>
-						<div
-							className="col-xxl-4 col-lg-6 col-md-4 col-12 col-sm-6 col-12"
-							data-sal="slide-up"
-							data-sal-delay="150"
-							data-sal-duration="800"
-						>
-							<Wallet
-								title="Bkashes"
-								description="Cash Transfer for easyest way you wast"
-								path="/collection"
-								icon="feather-command"
-								color="green"
-							/>
-						</div>
-						<div
-							className="col-xxl-4 col-lg-6 col-md-4 col-12 col-sm-6 col-12"
-							data-sal="slide-up"
-							data-sal-delay="150"
-							data-sal-duration="800"
-						>
-							<Wallet
-								title="Pyynle"
-								description="More then myself down among the Cash."
-								path="/collection"
-								icon="feather-cpu"
-								color="blue"
-							/>
-						</div>
-						<div
-							className="col-12"
-							data-sal="slide-up"
-							data-sal-delay="150"
-							data-sal-duration="800"
-						>
-							<Wallet
-								title="YesCash"
-								description="Biggest Bank transfer for best oppertunity"
-								path="/collection"
-								icon="feather-gitlab"
-								color="red"
-							/>
-						</div>
-					</div>
-				</div>
-			</div>
-		</div>
-	</div>
-);
+const ConnectArea = ({ className, space }) => {
+    const [mydata, setMyData] = useState({ financials: {} });
+    const [message, setMessage] = useState(''); // لتخزين الرسالة
+
+    useEffect(() => {
+        const fetchData = async () => {
+            try {
+                const apiBaseUrl = process.env.NEXT_PUBLIC_API_BASE_URL;
+                const storedToken = localStorage.getItem('token');
+
+                const result = await axios.get(`${apiBaseUrl}/myWallet`, {
+                    headers: {
+                        Authorization: `Bearer ${storedToken}`,
+                     },
+                });
+                setMyData(result.data);
+            } catch (error) {
+                console.error("Error fetching wallet data:", error);
+            }
+        };
+
+        fetchData();
+
+        // قراءة الرسالة المخزنة بعد تحميل الصفحة
+        const successMessage = sessionStorage.getItem('successMessage');
+        if (successMessage) {
+            setMessage(successMessage);
+            sessionStorage.removeItem('successMessage'); // حذف الرسالة بعد قراءتها
+        }
+    }, []);
+
+    const handleGetProfit = async () => {
+        try {
+            const apiBaseUrl = process.env.NEXT_PUBLIC_API_BASE_URL;
+            const storedToken = localStorage.getItem('token');
+
+            // استدعاء الروت '/getProfit'
+            const result = await axios.get(`${apiBaseUrl}/getProfit`, {
+                headers: {
+                    Authorization: `Bearer ${storedToken}`,
+                },
+            });
+            console.log('Profit data:', result.data);
+
+            // تخزين رسالة النجاح
+            sessionStorage.setItem('successMessage', 'تم إضافة الرصيد بنجاح!');
+            
+            // إعادة تحميل الصفحة
+            window.location.reload();  
+        } catch (error) {
+            console.error("Error fetching profit data:", error);
+        }
+    };
+
+    return (
+        <div
+            className={clsx(
+                'rn-connect-area',
+                space === 1 && 'rn-section-gapTop',
+                className
+            )}
+        >
+            <div className="container">
+                <div className="row g mb--50 mb_md--30 mb_sm--30 align-items-center"></div>
+               {/* عرض رسالة النجاح إذا كانت موجودة */}
+            {message && (
+                <div className="alert alert-success mt-3">
+                    {message}
+                </div>
+            )}
+                <div className="row g-5">
+                    <div className="col-lg-12">
+                        <div className="row g-5">
+                            <div className="d-flex align-items-center">
+                                <Wallet
+                                    title="الربح"
+                                    description={`${mydata?.financials?.profit || 0} TL`}
+                                    path="#"
+                                    icon="feather feather-trending-up"
+                                    color="purple"
+                                />
+                                {mydata?.financials?.profit >= 100 && (  // تحقق من الربح إذا كان أكبر أو يساوي 100
+                                    <button
+                                        onClick={handleGetProfit}
+                                        className="btn btn-primary"
+                                        type="button"
+                                    >
+                                        سحب الرصيد
+                                    </button>
+                                )}
+                            </div>
+                        </div>
+                    </div>
+                    <div className="col-lg-12">
+                        <div className="row g-5">
+                            <Wallet
+                                title="الصادر"
+                                description={`${mydata?.financials?.outgoing || 0} TL`}
+                                path="#"
+                                icon="feather feather-trending-up"
+                                color="purple"
+                            />
+                            <Wallet
+                                title="الوارد"
+                                description={`${mydata?.financials?.incoming || 0} TL`}
+                                path="#"
+                                icon="feather feather-trending-down"
+                                color="pink"
+                            />
+                            <Wallet
+                                title="الرصيد الحالي"
+                                description={`${mydata?.financials?.balance || 0} TL`}
+                                path="#"
+                                icon="feather feather-dollar-sign"
+                                color="yellow"
+                            />
+                            <Wallet
+                                title="المدين"
+                                description={`${mydata?.financials?.debts || 0} TL`}
+                                path="#"
+                                icon="feather-command"
+                                color="green"
+                            />
+                            <Wallet
+                                title="اجمالي الارباح"
+                                description={`${mydata?.financials?.profitTotals || 0} TL`}
+                                path="#"
+                                icon="feather-cpu"
+                                color="blue"
+                            />
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+           
+        </div>
+    );
+};
 
 ConnectArea.propTypes = {
-	className: PropTypes.string,
-	space: PropTypes.oneOf([1])
+    className: PropTypes.string,
+    space: PropTypes.oneOf([1]),
 };
+
 ConnectArea.defaultProps = {
-	space: 1
+    space: 1,
 };
 
 export default ConnectArea;

@@ -1,4 +1,4 @@
-import PropTypes from 'prop-types';
+import PropTypes from 'prop-types'; // Add PropTypes
 import { getData } from '@utils/getData';
 import PageLayoutSections from '@components/page-layout-sections';
 
@@ -6,33 +6,28 @@ export async function getServerSideProps() {
 	const data = await getData('ecard-sections');
 	return {
 		props: {
-			...data
+			...data,
+			className: 'home-sticky-pin sidebar-header position-relative'
+			
 		}
 	};
 }
 
-const Home = ({ myItems, className }) => (
+const Home = ({ myItems }) => (
 	<PageLayoutSections
-		pageTitle="البطاقات الإلكترونية"
+		pageTitle="البطاقات الرقمية"
 		items={myItems?.ecardSections?.data}
 		resourceType="ecard"
-		className={className}
 	/>
 );
 
+// Add prop types validation
 Home.propTypes = {
 	myItems: PropTypes.shape({
-		ecardSections: PropTypes.shape({
-			data: PropTypes.arrayOf(
-				PropTypes.shape({
-					id: PropTypes.number.isRequired, // Example property
-					name: PropTypes.string.isRequired // Example property
-					// Add other properties of your objects here
-				})
-			)
+		appSections: PropTypes.shape({
+			data: PropTypes.arrayOf(PropTypes.object) // Use arrayOf for better validation
 		})
-	}).isRequired,
-	className: PropTypes.string
+	})
 };
 
 export default Home;

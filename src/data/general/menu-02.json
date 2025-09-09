@@ -8,8 +8,8 @@
 
 	{
 		"id": 3,
-		"text": "عملائي",
-		"path": "/agents",
+		"text": "الحماية",
+		"path": "/security",
 		"icon": "feather feather-users"
 	},
 	{
@@ -36,9 +36,20 @@
 		"path": "/myWallet",
 		"icon": "feather feather-dollar-sign"
 	},
-
 	{
 		"id": 8,
+		"text": "وكلاؤنا",
+		"path": "/wakils",
+		"icon": "feather feather-users"
+	},
+  	{
+		"id": 9,
+		"text": "ادارة العملاء ",
+		"path": "https://api.its-server.online/",
+		"icon": "feather feather-home"
+	},
+	{
+		"id":10,
 		"text": "من نحن",
 		"path": "/about",
 		"icon": "feather feather-activity"

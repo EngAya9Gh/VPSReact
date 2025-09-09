@@ -35,27 +35,30 @@ const ExploreServiceArea = ({ className, space, data, id, sectionTitle }) => {
 					</div>
 				</div>
 				<div className="col-lg-12">
-					<motion.div layout className="isotope-list item-4">
-						{products?.map((prod) => (
-							<motion.div
-								key={prod.id}
-								className={clsx('grid-item')}
-								layout
-							>
-								<Service
-									title={prod.title}
-									slug={prod.slug}
-									total={prod.total}
-									likeCount={prod.id}
-									image={prod.image}
-									authors={prod.authors}
-									hasSections={prod.hasSections}
-									directToOrder={prod.directToOrder}
-								/>
-							</motion.div>
-						))}
-					</motion.div>
-				</div>
+	<motion.div layout className="isotope-list item-4">
+		{products
+			?.filter((prod) => prod.total !== 0) // تصفية المنتجات
+			.map((prod) => (
+				<motion.div
+					key={prod.id}
+					className={clsx('grid-item')}
+					layout
+				>
+					<Service
+						title={prod.title}
+						slug={prod.slug}
+						total={prod.total}
+						likeCount={prod.id}
+						image={prod.image}
+						authors={prod.authors}
+						hasSections={prod.hasSections}
+						directToOrder={prod.directToOrder}
+					/>
+				</motion.div>
+			))}
+	</motion.div>
+</div>
+
 			</div>
 		</div>
 	);

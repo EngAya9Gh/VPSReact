@@ -1,47 +1,75 @@
 import PropTypes from 'prop-types';
-import { getData } from '@utils/getData';
+import clsx from 'clsx';
+import axios from 'axios';
+import { useState, useEffect } from 'react'; 
+import withAuth from '@components/auth/withAuth';
 import PageLayoutServices from '@components/page-layout-services';
 import myStaticServices from '../../../data/my-static-services.json';
 
 export async function getServerSideProps(context) {
-	const data = await getData(`ecard-sections/${context.query.section_id}`);
+
 	return {
 		props: {
-			...data,
+	      className: 'home-sticky-pin sidebar-header position-relative',
 			sectionId: context.query.section_id
 		}
-	};
+	};  
 }
 
-const Home = ({ myItems, sectionId, className }) => {
-	const staticItem = myStaticServices.find(
-		(service) => service.slug === 'ecard'
-	);
+const Home = ({ sectionId }) => {
+	const staticItem = myStaticServices.find((item) => item.slug === 'ecard');
 	const hasSections = staticItem ? staticItem.hasSections : null;
+  const [myItems, setMyItems] = useState(null); // حالة لتخزين البيانات التي تم جلبها
+  const [loading, setLoading] = useState(true); // حالة لتحديد ما إذا كان يتم تحميل البيانات
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+	   const apiBaseUrl = process.env.NEXT_PUBLIC_API_BASE_URL;
+
+        const token = localStorage.getItem('token'); // جلب التوكن من localStorage
+        if (token) {
+          const response = await axios.get(
+            `${apiBaseUrl}/ecard-sections/${sectionId}`,
+            {
+              headers: {
+                Authorization: `Bearer ${token}` // تمرير التوكن في رأس الطلب
+              }
+            }
+          );
+          setMyItems(response.data); // تخزين البيانات في الحالة
+        console.log('data',response.data);
+}
+      } catch (error) {
+        console.error('Error fetching data:', error);
+      } finally {
+        setLoading(false); // تحديد أنه تم تحميل البيانات
+      }
+    };
+
+    fetchData(); // استدعاء دالة جلب البيانات
+  }, []); // سيتم تنفيذها عند تحميل الصفحة لأول مرة فقط
+
+  if (loading) {
+    return <div>Loading...</div>; // عرض رسالة تحميل أثناء الانتظار
+  }
+
 	return (
 		<PageLayoutServices
-			pageTitle="البطاقات الإلكترونية"
-			items={myItems?.ecards}
+			pageTitle="البطاقات الرقمية"
+			items={myItems?.apps}
 			resourceType="ecard"
 			sectionId={sectionId}
 			hasSection={hasSections}
-			className={className}
 		/>
 	);
 };
 
 Home.propTypes = {
-	myItems: PropTypes.shape({
-		ecards: PropTypes.arrayOf(
-			PropTypes.shape({
-				id: PropTypes.number.isRequired, // Example property
-				title: PropTypes.string.isRequired // Example property
-				// Add other properties here if needed
-			})
-		)
-	}).isRequired,
-	sectionId: PropTypes.string.isRequired,
-	className: PropTypes.string
+	
+	sectionId: PropTypes.string.isRequired
 };
 
-export default Home;
+
+// تغليف المكون مع withAuth للتحقق من المصادقة
+export default withAuth(Home);

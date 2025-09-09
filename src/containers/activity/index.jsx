@@ -2,7 +2,7 @@ import PropTypes from 'prop-types';
 import clsx from 'clsx';
 import Activity from '@components/activity';
 
-const ActivityArea = ({ space, className, data }) => (
+const ActivityArea = ({ space, className, data,isService }) => (
 	<div
 		className={clsx(
 			'rn-activity-area',
@@ -12,16 +12,24 @@ const ActivityArea = ({ space, className, data }) => (
 	>
 		<div className="container">
 			<div className="row mb--30">
-				<h3 className="title">Activity Area</h3>{' '}
+				<h3 className="title"></h3>{' '}
 				{/* Add content to the heading */}
 			</div>
 			<div className="row g-12 activity-direction">
 				<div className="col-lg-8 mb_dec--15">
-					{data?.activities?.map((item) => (
+					{isService? data?.activities?.map((item) => (
 						<Activity
 							key={item.id}
 							author={item.author}
 							image="/images/portfolio/portfolio-07.jpg"
+							isService
+						/>
+					)):data?.activities?.map((item) => (
+						<Activity
+							key={item.id}
+							author={item.name}
+							image="/images/portfolio/portfolio-07.jpg"
+							isService
 						/>
 					))}
 				</div>

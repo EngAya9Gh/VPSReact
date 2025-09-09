@@ -5,7 +5,6 @@
     "es2020": true,
     "node": true
   },
-
   "extends": [
     "eslint:recommended",
     "plugin:react/recommended",
@@ -13,11 +12,9 @@
     "plugin:react-hooks/recommended",
     "plugin:import/warnings",
     "plugin:jsx-a11y/strict",
-    "plugin:prettier/recommended",
     "plugin:@next/next/recommended",
     "airbnb"
   ],
-
   "settings": {
     "react": {
       "version": "detect"
@@ -34,7 +31,7 @@
           ["@utils", "./src/utils/"],
           ["@hooks", "./src/hooks/"]
         ],
-        "extensions": [".js", ".jsx"]
+        "extensions": [".js", ".jsx",".json"]
       },
       "node": {
         "paths": ["./"]
@@ -53,12 +50,19 @@
     }
   },
   "plugins": ["react", "react-hooks", "prettier", "jsx-a11y"],
-  "rules": {  
-    "object-curly-spacing":"off",
-    "max-len":"off",
-    "react/no-array-index-key":"off",
-    "react/jsx-no-useless-fragment":"off",
-    "prefer-destructuring":"off",
+  "rules": {
+    "no-nested-ternary": "off",
+     "jsx-a11y/label-has-for": "off",
+    "react/jsx-max-props-per-line": "off",    // تعطيل تحذير وضع الخصائص في سطر جديد
+    "eol-last": "off",    // تعطيل خطأ السطر الجديد في نهاية الملف
+    "key-spacing": "off",
+    "jsx-a11y/heading-has-content": "off",
+    "react/jsx-curly-spacing": "off",
+    "object-curly-spacing": "off",
+    "max-len": "off",
+    "react/no-array-index-key": "off",
+    "react/jsx-no-useless-fragment": "off",
+    "prefer-destructuring": "off",
     "no-use-before-define": "off",
     "semi": "off",
     "comma-spacing": "off",
@@ -84,29 +88,28 @@
     "react/jsx-closing-bracket-location": "off",
     "react/jsx-closing-tag-location": "off",
     "react/jsx-props-no-multi-spaces": "off",
-   "padded-blocks": "off",
+    "padded-blocks": "off",
     "no-unused-vars": "off",
     "react/self-closing-comp": "off",
     "prettier/prettier": "off",
     "no-trailing-spaces": "off",
-     "no-tabs": "off",
-     "no-multiple-empty-lines": "off",
-     "react/jsx-indent": "off",
+    "no-tabs": "off",
+    "no-multiple-empty-lines": "off",
+    "react/jsx-indent": "off",
     "object-curly-newline": "off",
     "import/prefer-default-export": "off",
     "indent": "off",
-    "quotes":   ["off"],
+    "quotes": "off",
     "camelcase": ["off", { "properties": "never" }],
-    "eslint-plugin/fixer-return:": "off",
     "operator-linebreak": "off",
     "implicit-arrow-linebreak": "off",
     "comma-dangle": ["error", "only-multiline"],
- "spaced-comment": "off",
+    "spaced-comment": "off",
     "no-mixed-spaces-and-tabs": "off",
     "function-paren-newline": "off",
     "react/jsx-indent-props": "off",
     "react/jsx-one-expression-per-line": "off",
-    "linebreak-style": ["off"],
+    "linebreak-style": "off",
     "no-empty": "off",
     "no-console": "off",
     "react/forbid-prop-types": "off",

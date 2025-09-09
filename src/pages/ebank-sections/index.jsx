@@ -6,7 +6,8 @@ export async function getServerSideProps(_context) {
 	const data = await getData('ebank-sections');
 	return {
 		props: {
-			...data
+			...data,
+			className: 'home-sticky-pin sidebar-header position-relative'
 		}
 	};
 }

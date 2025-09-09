@@ -6,7 +6,7 @@ const SignupArea = ({ agent_info, className, space }) => (
 	<div
 		className={clsx(
 			'login-area',
-			space === 1 && 'rn-section-gapTop',
+			space === 1 && 'rn-section-gapTop_1',
 			className
 		)}
 	>

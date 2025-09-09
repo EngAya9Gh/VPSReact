@@ -4,15 +4,15 @@ import Button from '@ui/button';
 import axios from 'axios';
 import { ToastContainer, toast } from 'react-toastify';
 
-const OrderForm = ({ dataCommunication }) => {
+const OrderForm = ({ dataCommunication, myMobile }) => {
 	const [user, setUser] = useState({});
 	
 	// الحصول على التوكن من localStorage وتحديث السعر
 	const storedToken = localStorage.getItem('token');
-useEffect(() => {
+	useEffect(() => {
 
-	const getUserDataAndUpdatePrice = async () => {
-		
+		const getUserDataAndUpdatePrice = async () => {
+			
 			const apiBaseUrl = process.env.NEXT_PUBLIC_API_BASE_URL;
 			// جلب بيانات المستخدم
 			const response = await axios.get(
@@ -24,27 +24,26 @@ useEffect(() => {
 				}  
 			);
 			setUser(response.data);
-		
-			
-	}
-	getUserDataAndUpdatePrice();
-}, []);
+		}
+		getUserDataAndUpdatePrice();
+	}, []);
+	
 	const initialState = {
 		count: '',
 		price: dataCommunication ? dataCommunication.price : '',
 		user_id: user ? user.id : '',
 		data_communication_id: dataCommunication ? dataCommunication.id : '',
-		mobile: ''
+		mobile: myMobile || '' // إذا كانت قيمة myMobile موجودة، استخدمها في حقل الموبايل
 	};
+	
 	const [dataField, setDataField] = useState(initialState);
 
 	useEffect(() => {
-	
 		const updatedPrice = dataField.count * (dataCommunication.price || 0);
 		setDataField((prevFields) => ({
 			...prevFields,
 			user_id: user ? user.id : '',	
-		data_communication_id: dataCommunication ? dataCommunication.id : '',
+			data_communication_id: dataCommunication ? dataCommunication.id : '',
 			price: updatedPrice
 		}));
 	}, [dataField.count, dataCommunication.price]);
@@ -53,10 +52,9 @@ useEffect(() => {
 		e.preventDefault();
 		try {
 			const apiBaseUrl = process.env.NEXT_PUBLIC_API_BASE_URL;
-			const result=	await axios.post(
+			const result = await axios.post(
 				`${apiBaseUrl}/data-communication/order/${dataCommunication.id}`,
 				dataField,
-				
 				{
 					headers: {
 						Authorization: `Bearer ${storedToken}`
@@ -126,7 +124,7 @@ useEffect(() => {
 						name="mobile"
 						required
 						placeholder="رقم الهاتف"
-						value={dataField.mobile}
+						value={dataField.mobile} // هنا يتم تعيين قيمة رقم الموبايل
 						onChange={handleInputChange}
 					/>
 				</div>
@@ -155,9 +153,7 @@ OrderForm.propTypes = {
 		id: PropTypes.string.isRequired,
 		note: PropTypes.string
 	}).isRequired,
-	user: PropTypes.shape({
-		id: PropTypes.string.isRequired
-	}).isRequired
+	myMobile: PropTypes.string // إضافة PropType لرقم الموبايل
 };
 
 export default OrderForm;

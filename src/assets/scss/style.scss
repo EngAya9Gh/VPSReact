@@ -190,7 +190,17 @@ button.btn.btn-primary {
 .mycenter {
 	text-align: center;
 }
-
+.price {
+direction:ltr;
+color:var(--color-primary)!important;
+}
+.firsat_color{
+background-color:red !important;
+color:white !important;
+}
+.rn-section-gapTop-kontor{
+padding-right:0px !important
+}
 .mydiv {
 	width: 50%;
 	margin: auto;
@@ -205,6 +215,16 @@ button.btn.btn-primary {
 		margin-top: 10px;
 	}
 }
+.name-style{
+text-align:center;
+margin:15px 0px 0px 0px ;
+color:#ffd53e;
+font-size:15px;
+padding:0px
+}
+.align-txt-center{
+text-align:center
+}
 .rn-banner-area {
 	padding: 30px;
 	@media #{$sm-layout} {
@@ -215,17 +235,29 @@ button.btn.btn-primary {
 		padding: 1px;
 	}
 }
-.myspan {
-	background: var(--color-primary);
-	color: white;
-	padding: 5px;
+.span_bold_req{
+font-weight:900 !important;
 }
+.span_color_req{
+color:#ffd22d !important;
+}
+.myspan_failed,.myspan_warn,.myspan_suc
+ {
+	color: white;
+    color: white !important;
+	padding: 8px;
+display:inline-block;
+font-size:20px;
+}
+
 .rn-top-bar-area {
 	@media #{$sm-layout} {
 		padding: 1px;
 	}
 }
-
+.debts{
+color:red !important
+}
 .favorit{
 	//background-color:  var(--color-primary);
 	color: var(--color-primary);
@@ -260,4 +292,374 @@ i.feather {
 .favorite_Feather{
 margin-left: 0px !important;
 font-size: 23px;
+}
+.p-22{
+	padding-top:22px;
+	text-align: center;
+}
+.basecolor{
+	color:var(--color-primary) !important;  
+}
+.mycheckbox{
+	position:static !important;
+	opacity: 1 !important;
+
+}
+.mytextinput{
+	background-color:white !important ;
+}
+.mywallet-wrapper{
+    width:15%;
+    margin:5px;
+        @media #{$sm-layout} {
+
+        width:100%;
+            }
+}
+
+
+@media only screen and (max-width: 767px) {
+    .mydropdown {
+        right:-20px !important;
+    }
+}
+.header-area .logo-thumbnail {
+text-align:center;
+}
+.logo-thumbnail + .price{
+text-align:center;
+margin-top: 20px;
+    font-size: 15px;
+    font-weight: 900;
+
+}
+.date-filters{
+text-align:center
+}
+/* تخصيص الحاوية */
+.custom-wrapper {
+  display: inline-block;
+  font-family: var(--font-secondary);
+  margin: 20px;
+  padding: 10px;
+  background-color: #f9f9f9;
+  border-radius: 10px;
+  box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+/* تخصيص الـ input */
+.custom-datepicker {
+  width: 200px;
+  padding: 10px;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  background-color: #fff;
+  font-size: 16px;
+  color: #333;
+  outline: none;
+  transition: border-color 0.3s;
+}
+
+.custom-datepicker:focus {
+  border-color: #007bff;
+}
+
+/* تخصيص التقويم */
+.custom-calendar .react-datepicker__header {
+  background-color: #007bff;
+  color: #fff;
+  border-radius: 10px 10px 0 0;
+  padding: 10px;
+}
+
+.custom-calendar .react-datepicker__current-month {
+  font-size: 18px;
+}
+
+.custom-calendar .react-datepicker__day-names {
+  background-color: #f1f1f1;
+  color: #007bff;
+  font-weight: bold;
+}
+
+.custom-calendar .react-datepicker__day {
+  font-size: 16px;
+  padding: 10px;
+}
+
+.custom-calendar .react-datepicker__day:hover {
+  background-color: #007bff;
+  color: #fff;
+  cursor: pointer;
+}
+
+.custom-calendar .react-datepicker__day--selected {
+  background-color: #28a745;
+  color: #fff;
+}
+
+.custom-calendar .react-datepicker__day--today {
+  font-weight: bold;
+  color: #ff5733;
+}
+.custom-calendar .react-datepicker__header,custom-calendar {
+background-color: var(--color-secondary)!important
+
+}
+.react-datepicker__current-month,.react-datepicker__day, .react-datepicker__day-name, .react-datepicker__time-name{
+color: var(--color-primary)!important
+}
+.react-datepicker {
+    font-family:var(--font-secondary) !important;
+    font-size: .8rem;
+    color: var(--color-primary)!important;
+    background-color:var(--color-secondary)!important;
+    border: 1px solid #aeaeae;
+    border-radius: 15px;
+    display: inline-block;
+    position: relative;
+    line-height: normal;
+    padding: 5px;
+}
+.table-packeges{
+    width:50%;
+          @media #{$sm-layout} {
+            width:100%;
+            }
+}
+.Toastify__toast-container--top-right{
+   right:40% !important;
+        @media #{$sm-layout} {
+                right: var(--toastify-toast-right);
+            }
+}
+.Toastify__toast{
+padding:18px;
+font-size:25px !important
+}
+
+.icon-box1{
+position:fixed;
+top:300px;
+left:30%;
+        @media #{$sm-layout} {
+          top:290px;
+         left:15%;
+            }
+}
+.product-style-one .latest-bid {
+font-wieght:900;
+font-size:13px;
+color:var(--color-primary);
+
+}
+.text-center{
+text-align:center
+}
+.notification-icon {
+  position: relative;
+}
+
+.notification-bell {
+  position: relative;
+  display: inline-block;
+}
+
+.notification-count {
+  position: absolute;
+  top: -5px;
+  right: -5px;
+  background: red;
+  color: white;
+  font-size: 10px;
+  font-weight: bold;
+  padding: 3px 6px;
+  border-radius: 50%;
+  line-height: 1;
+  z-index: 10;
+}
+.my-notification{
+width:28px !important;
+height:28px !important;
+color:var(--color-primary) !important;
+}
+.price.align-txt-center{
+  padding:0px;
+  margin:0px;
+font-size:15px;
+}
+.my-footer{
+padding-left:0px !important;
+padding-right:0px !important;
+
+}
+.popup-mobile-menu .inner .header-top{
+justify-content:center !important;
+
+border-bottom:none !important;
+}
+.upcoming-projects tr{
+border:none !important
+}
+.service-link {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  padding: 10px;
+  background-color:var(--background-color-4);
+  border: none;
+  cursor: pointer;
+  position: relative;
+}
+
+.service-link .price {
+  background-color: #e0f7fa;
+  color: #00796b;
+  padding: 4px 8px;
+  border-radius: 6px;
+  margin-left: 10px;
+  font-weight: bold;
+  position: relative;
+}
+
+
+.table-packeges{
+width:100%
+}
+.col-kon{
+background:var(--background-color-4);
+padding: 2px;
+border-radius: 8px;
+text-align: center;
+border: 1px solid var(--background-color-4);
+
+}
+.price-kon{
+background: var(--color-primary) !important;
+color:white !important;
+font-size:12px !important
+
+}
+.price-kon-sale{
+background: var(--color-primary) !important;
+color:yellow !important;
+font-size:12px !important
+
+}
+.my-box-table{
+background-color:inherit !important;
+border:none !important;
+}
+.order-name{
+font-size:16px !important
+}
+.product-style-one .card-thumbnail a:before{
+ background-image: none;
+}
+.my-btn{
+    width: 75%;
+    display: block;
+    margin:8px auto
+}
+.my-input-width{
+width:75%
+}
+.date-range-wrapper {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  align-items: center;
+  margin-top: 1rem;
+}
+
+.date-group {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  flex-shrink: 0;
+}
+
+
+@media (min-width: 768px) {
+  .date-group {
+    flex-direction: unset;
+    align-items: baseline;
+  }
+
+  .date-group label {
+    margin-inline-end: 8px;
+    margin-bottom: 0;
+  }
+}
+.rn-icon-list.user-account .rn-dropdown{
+height:300px !important;
+overflow:auto;
+cursor: pointer;
+}
+.border-input{
+    border: 2px solid var(--color-border) !important;
+color:#a8aca1 !important;
+}
+.margin-8{
+ margin: 8px 16px ;
+}
+.grid-kon{
+display:grid;
+grid-template-columns: repeat(3, 1fr);
+gap: 15px;
+   @media #{$sm-layout} {
+          grid-template-columns: repeat(1, 1fr);
+            }
+  @media #{$md-layout} {
+            grid-template-columns: repeat(2, 1fr);
+              }
+}
+.my-dollar{
+    color: var(--color-primary) !important;
+    font-weight: 900 !important;
+    font-size: larger !important;
+}
+.rn-icon-list.user-account .rn-dropdown.myrate
+{
+min-width:120px !important;
+right:-110px  !important;
+}.tickerWrapper {
+  background-color: #222;
+  color: #fff;
+  padding: 10px 20px;
+  overflow: hidden;
+  white-space: nowrap;
+  box-sizing: border-box;
+  border-radius: 0 0 8px 8px;
+  font-weight: 600;
+  font-size: 1rem;
+  position: relative;
+  height: 40px;
+}
+
+.tickerContent {
+  display: inline-block;
+  position: absolute;
+  white-space: nowrap;
+  animation: ticker 20s linear infinite;
+  transform: translateX(-100%);
+}
+
+.tickerItem {
+  font-size: 15px;
+  font-family: var(--font-secondary) !important;
+}
+
+.separator {
+  margin: 0 15px;
+}
+
+@keyframes ticker {
+  0% {
+    transform: translateX(-100%);
+  }
+  100% {
+    transform: translateX(100%);
+  }
 }

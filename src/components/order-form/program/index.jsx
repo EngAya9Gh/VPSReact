@@ -39,10 +39,15 @@ const OrderForm = ({ className, program }) => {
 	};
 
 	const [programField, setProgramField] = useState(initialState);
+  const [isDisabled, setIsDisabled] = useState(false); // حالة لتتبع ما إذا كان الزر معطلاً
 
 
 	const onSubmit = async (e) => {
 		e.preventDefault();
+        if (isDisabled) return; // إذا كان الزر معطلاً، لا نسمح بالضغط مرة أخرى
+
+        setIsDisabled(true); // تعطيل الزر بعد الضغط عليه للمرة الأولى
+
 		try {
 			setProgramField((prev) => ({
 				...prev,
@@ -86,9 +91,14 @@ const OrderForm = ({ className, program }) => {
 					</h3>
 				</div>
 
-				<Button type="submit" size="medium" className="mr--15">
-					شراء
-				</Button>
+             <Button
+                      type="submit"
+                      size="medium"
+                      className="mr--15"
+                      disabled={isDisabled} // تعطيل الزر بعد الضغط عليه
+                    >
+                      {isDisabled ? 'جاري الإرسال...' : 'شراء'}
+            </Button>
 				<Button path="/" color="primary-alta" size="medium">
 					الغاء الأمر
 				</Button>

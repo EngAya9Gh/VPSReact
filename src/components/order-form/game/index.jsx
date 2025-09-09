@@ -33,8 +33,9 @@ const OrderForm = ({ game }) => {
 		user_id: user ? user.id : '',
 		user_id_game: '',
 		game_id: game ? game.id : '',
+		oyun_id: game ? game.user_id_game : '',
 		price: game ? game.price : '',
-		count: '0'
+		count: game ? game.amount : '',
 	};
 
 	const [gameField, setGameField] = useState(initialState);
@@ -50,6 +51,7 @@ const OrderForm = ({ game }) => {
 
 	const onSubmit = async (e) => {
 		e.preventDefault();
+        console.log(gameField);
 		try {
 			const apiBaseUrl = process.env.NEXT_PUBLIC_API_BASE_URL;
 		const result=	await axios.post(

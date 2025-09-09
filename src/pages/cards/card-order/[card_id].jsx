@@ -11,7 +11,8 @@ export async function getServerSideProps(context) {
 	const data = await getData(`card/${context.query.card_id}`);
 	return {
 		props: {
-			...data
+			...data,
+			className: 'home-sticky-pin sidebar-header position-relative'
 		}
 	};
 }

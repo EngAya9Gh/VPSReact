@@ -15,15 +15,15 @@ const PersonalInformation = ({ authUser, token }) => {
 	const updateUser = async (userId, updatedData) => {
 		try {
 			const apiBaseUrl = process.env.NEXT_PUBLIC_API_BASE_URL;
-			await axios.patch(`${apiBaseUrl}/${userId}`, updatedData, {
+			await axios.patch(`${apiBaseUrl}/users/${userId}`, updatedData, {
 				headers: {
 					'Content-Type': 'application/json',
 					Authorization: `Bearer ${token}`
 				}
 			});
-			toast('User updated successfully');
+			toast('تم التحديث بنجاح');
 		} catch (error) {
-			toast('Failed to update user');
+			toast('فشل التحديث هناك معلومات خاطئة');
 		}
 	};
 
@@ -111,35 +111,7 @@ const PersonalInformation = ({ authUser, token }) => {
 						onChange={handleChange}
 					/>
 				</div>
-				<div className="mb-5">
-					<label htmlFor="password" className="form-label">
-						كلمة المرور
-					</label>
-					<input
-						type="password"
-						id="password"
-						name="password"
-						required
-						value={user.password}
-						onChange={handleChange}
-					/>
-				</div>
-				<div className="mb-5">
-					<label
-						htmlFor="password_confirmation"
-						className="form-label"
-					>
-						تأكيد كلمة المرور
-					</label>
-					<input
-						type="password"
-						id="password_confirmation"
-						name="password_confirmation"
-						required
-						value={user.password_confirmation}
-						onChange={handleChange}
-					/>
-				</div>
+		
 
 				<Button
 					type="submit"

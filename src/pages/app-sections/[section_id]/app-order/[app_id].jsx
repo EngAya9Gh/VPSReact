@@ -1,21 +1,60 @@
 import PropTypes from 'prop-types';
 import clsx from 'clsx';
+import axios from 'axios';
+import { useState, useEffect } from 'react'; 
 import ProductTitle from '@components/product-details/myFavorite';
 import OrderForm from '@components/order-form/app';
 import withAuth from '@components/auth/withAuth';
-import { getData } from '@utils/getData';
 
 export async function getServerSideProps(context) {
-	const data = await getData(`app/${context.query.app_id}`);
+
 	return {
 		props: {
-			...data
+			className: 'home-sticky-pin sidebar-header position-relative',
+
+			appId: context.query.app_id
 		}
-	};
+	};  
 }
 
 
-const ProductDetailsArea = ({ myItems }) => (
+const ProductDetailsArea = ({ appId }) => {
+  const [myItems, setMyItems] = useState(null); // حالة لتخزين البيانات التي تم جلبها
+  const [loading, setLoading] = useState(true); // حالة لتحديد ما إذا كان يتم تحميل البيانات
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+	   const apiBaseUrl = process.env.NEXT_PUBLIC_API_BASE_URL;
+
+        const token = localStorage.getItem('token'); // جلب التوكن من localStorage
+        if (token) {
+          const response = await axios.get(
+            `${apiBaseUrl}/app/${appId}`,
+            {
+              headers: {
+                Authorization: `Bearer ${token}` // تمرير التوكن في رأس الطلب
+              }
+            }
+          );
+          setMyItems(response.data); // تخزين البيانات في الحالة
+        console.log('data',response.data);
+}
+      } catch (error) {
+        console.error('Error fetching data:', error);
+      } finally {
+        setLoading(false); // تحديد أنه تم تحميل البيانات
+      }
+    };
+
+    fetchData(); // استدعاء دالة جلب البيانات
+  }, []); // سيتم تنفيذها عند تحميل الصفحة لأول مرة فقط
+
+  if (loading) {
+    return <div>Loading...</div>; // عرض رسالة تحميل أثناء الانتظار
+  }
+
+	return (
 	<div className={clsx('product-details-area')}>
 		<div className="container">
 			<div className="row g-5">
@@ -37,16 +76,11 @@ const ProductDetailsArea = ({ myItems }) => (
 			</div>
 		</div>
 	</div>
-);
+)};
 
 ProductDetailsArea.propTypes = {
-	myItems: PropTypes.shape({
-		app: PropTypes.shape({
-			name: PropTypes.string,
-			likeCount: PropTypes.number,
-			note: PropTypes.string
-		})
-	})
+  
+    appId: PropTypes.number.isRequired
 };
 
 export default withAuth(ProductDetailsArea);

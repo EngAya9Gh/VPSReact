@@ -6,7 +6,9 @@ export async function getServerSideProps() {
 	const data = await getData('app-sections');
 	return {
 		props: {
-			...data
+			...data,
+			className: 'home-sticky-pin sidebar-header position-relative'
+			
 		}
 	};
 }

@@ -8,7 +8,8 @@ export async function getServerSideProps(context) {
 	return {
 		props: {
 			...data,
-			sectionId: context.query.section_id
+			sectionId: context.query.section_id,
+			className: 'home-sticky-pin sidebar-header position-relative'
 		}
 	};
 }

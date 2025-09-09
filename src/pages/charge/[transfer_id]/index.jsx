@@ -15,7 +15,8 @@ export async function getServerSideProps(context) {
 	);
 	return {
 		props: {
-			...data
+			...data,
+			className: 'home-sticky-pin sidebar-header position-relative'
 		}
 	};
 }

@@ -15,6 +15,7 @@ const Product = ({ overlay, title, slug, image }) => (
 				<Image src={image} alt={title} width={533} height={533} />
 			</Anchor>
 		</div>
+		<div className='p-22'>{title}</div>
 	</div>
 );
 

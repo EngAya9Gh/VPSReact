@@ -3,7 +3,7 @@ import clsx from 'clsx';
 import Anchor from '@ui/anchor';
 
 const Wallet = ({ className, title, description, path, icon, color }) => (
-	<div className={clsx('wallet-wrapper', className)}>
+	<div className={clsx('wallet-wrapper mywallet-wrapper ', className)}>
 		<div className="inner">
 			<div className="icon">
 				<i className={clsx('feather', icon, `color-${color}`)} />

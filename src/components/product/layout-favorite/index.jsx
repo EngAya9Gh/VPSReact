@@ -9,15 +9,15 @@ import myStaticServices from '../../../data/my-static-services.json';
 const Product = ({ overlay, title, slug, image ,section_id,id}) => {
   
 	const [path, setPath] = useState([]);
-const foundItem = myStaticServices.find((item) => item.slug === 'program');
+const foundItem = myStaticServices.find((item) => item.slug === slug);
 const hasSection = foundItem ? foundItem.hasSections : null;
 useEffect(() => {
   
   let path = '';
   if (hasSection) {
-    path = `/${slug}-sections/${section_id}/${slug}s/${id}`;
+    path = `/${slug}-sections/${section_id}/${slug}-order/${id}`;
   } else {
-    path = `/${slug}s/${id}`;
+    path = `/${slug}-order/${id}`;
   }
 	console.log(path);
   setPath(path);
